@@ -1,35 +1,64 @@
 console.log("Site EMPIRE chargé avec succès !");
+// ==========================
+// COMPTEURS ANIMÉS
+// ==========================
+
+const sectionChiffres = document.querySelector(".chiffres");
 const compteurs = document.querySelectorAll(".compteur");
 
-compteurs.forEach(compteur => {
+let compteurLance = false;
 
-    const cible = +compteur.getAttribute("data-cible");
+function lancerCompteurs(){
 
-    let valeur = 0;
+    if(compteurLance) return;
 
-    const vitesse = cible / 100;
+    compteurLance = true;
 
-    function miseAJour(){
+    compteurs.forEach(compteur => {
 
-        if(valeur < cible){
+        const cible = +compteur.getAttribute("data-cible");
 
-            valeur += vitesse;
+        let valeur = 0;
 
-            compteur.innerText = Math.ceil(valeur);
+        const vitesse = cible / 100;
 
-            setTimeout(miseAJour,20);
+        function miseAJour(){
 
-        }else{
+            if(valeur < cible){
 
-            compteur.innerText = cible.toLocaleString("fr-FR");
+                valeur += vitesse;
+
+                compteur.innerText = Math.ceil(valeur);
+
+                setTimeout(miseAJour,20);
+
+            }else{
+
+                compteur.innerText = cible.toLocaleString("fr-FR");
+
+            }
 
         }
 
+        miseAJour();
+
+    });
+
+}
+
+
+const observer = new IntersectionObserver((entrees)=>{
+
+    if(entrees[0].isIntersecting){
+
+        lancerCompteurs();
+
     }
 
-    miseAJour();
-
 });
+
+
+observer.observe(sectionChiffres);
 // ==========================
 // LIGHTBOX GALERIE
 // ==========================
